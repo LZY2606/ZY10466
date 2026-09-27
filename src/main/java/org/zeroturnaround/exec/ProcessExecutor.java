@@ -1031,7 +1031,7 @@ public class ProcessExecutor {
 
   private Process invokeStart() throws IOException {
     try {
-      return builder.start();
+      return startProcess();
     }
     catch (IOException e) {
       if (e.getClass().equals(IOException.class)) {
@@ -1050,6 +1050,21 @@ public class ProcessExecutor {
       }
       throw e;
     }
+  }
+
+  /**
+   * Starts the process. The default implementation delegates to the configured
+   * {@link ProcessBuilder}. Override this to substitute how the process is created,
+   * for example to inject a test double; everything downstream of this method
+   * (stream pumping, waiting, stopping and closing) is unaffected. Failures are
+   * still wrapped with the executing command context by the caller, exactly as
+   * failures of {@link ProcessBuilder#start()} are.
+   *
+   * @return the started process (not <code>null</code>).
+   * @throws IOException the process could not be started.
+   */
+  protected Process startProcess() throws IOException {
+    return builder.start();
   }
 
   private String getExecutingLogMessage() {
