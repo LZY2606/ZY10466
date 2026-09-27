@@ -1029,7 +1029,20 @@ public class ProcessExecutor {
           allowedExitValues == null ? null : new HashSet<Integer>(allowedExitValues));
   }
 
-  private Process invokeStart() throws IOException {
+  /**
+   * Starts the operating system process. The default implementation delegates to
+   * {@link ProcessBuilder#start()} and only enriches the exceptions thrown by it.
+   * <p>
+   * Override this to customize how the process is created, e.g. to substitute a
+   * controlled <code>Process</code> implementation in tests. Everything after this
+   * method (stream pumping, waiting, stopping, closing) operates on the returned
+   * <code>Process</code> through the standard <code>java.lang.Process</code>
+   * interface only, so a substitute does not change the semantics of the executor.
+   *
+   * @return the started process (not <code>null</code>).
+   * @throws IOException an error occurred when the process was started.
+   */
+  protected Process invokeStart() throws IOException {
     try {
       return builder.start();
     }

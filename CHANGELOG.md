@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Deterministic race tests for timeout, stop and output backpressure (`org.zeroturnaround.exec.test.race`), driven by a scripted `Process` substitute and a test-controlled timeout linearization point instead of wall-clock timeouts; see `docs/deterministic-race-testing.md`.
+- `ProcessExecutor.invokeStart()` is now `protected` (was `private`), so subclasses can customize how the process is created, e.g. substitute a controlled `Process` in tests. The default implementation is unchanged.
 - `PumpStreamHandler.getThreadName(String)` to customize the names of the pump threads ([#120](https://github.com/zeroturnaround/zt-exec/issues/120)).
 - `PumpStreamHandler.newThread(PumpThreadSpec)`, which receives the task, the stream the thread pumps and the name to give it, so a pump thread can be constructed complete. It supersedes `newThread(Runnable)`, which still works and is still called.
 - `PumpStreamHandler.getPumpRole(Runnable)` telling which of the process streams a pump serves.
